@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "clave": "menu_jugar",
+      "valor": "Jugar"
+    },
+    {
+      "clave": "menu_opciones",
+      "valor": "Opciones"
+    },
+    {
+      "clave": "menu_salir",
+      "valor": "Salir"
+    }
+  ]
+}
