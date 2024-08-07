@@ -15,12 +15,15 @@ public class CicloDiaNoche : MonoBehaviour
         luzDireccional = GetComponent<Light>();
         textHoraActual = GameObject.Find(HORA_ACTUAL).GetComponent<Text>();
 
+         // Inicializar tiempoTranscurrido para que el juego comience a las 8:00 AM
+        float horaInicio = 8f;
+        tiempoTranscurrido = (horaInicio / 24f) * duracionDiaCompleto;
     }
 
     private void Update()
     {
         ActualizarCicloDiaNoche();
-        MostrarHoraEnConsola();
+        MostrarHoraEnTexto();
     }
 
     private void ActualizarCicloDiaNoche()
@@ -29,7 +32,7 @@ public class CicloDiaNoche : MonoBehaviour
         float porcentajeDia = (tiempoTranscurrido % duracionDiaCompleto) / duracionDiaCompleto;
 
         // Rotar la luz direccional para simular el sol moviéndose por el cielo
-        luzDireccional.transform.localRotation = Quaternion.Euler(new Vector3((porcentajeDia * 360f) - 90f, 170f, 0));
+        luzDireccional.transform.localRotation = Quaternion.Euler(new Vector3((porcentajeDia * 360f) - 110f, 170f, 0));
 
         // Cambiar la intensidad de la luz según el porcentaje del día (opcional)
         if (porcentajeDia <= 0.5f)
@@ -44,14 +47,19 @@ public class CicloDiaNoche : MonoBehaviour
         }
     }
 
-    private void MostrarHoraEnConsola()
+    private void MostrarHoraEnTexto()
     {
         if (textHoraActual != null)
         {
             float horaDelDia = (tiempoTranscurrido % duracionDiaCompleto) / duracionDiaCompleto * 24f;
             int horas = Mathf.FloorToInt(horaDelDia);
             int minutos = Mathf.FloorToInt((horaDelDia - horas) * 60);
-            textHoraActual.text = $"{horas:D2}:{minutos:D2}";
+
+            string periodo = horas >= 12 ? "PM" : "AM";
+            if (horas == 0) horas = 12; // Medianoche
+            else if (horas > 12) horas -= 12; // Convertir de 24 horas a 12 horas
+
+            textHoraActual.text = $"{horas:D2}:{minutos:D2} {periodo}";
         }
     }
 }
